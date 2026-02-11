@@ -3,153 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For My Love, Priyanka ❤️</title>
+    <title>For My Queen, Priyanka ❤️</title>
     
-    <!-- লাইব্রেরি -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;500;700&family=Orbitron:wght@500;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- GSAP অ্যানিমেশন -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <!-- প্রিমিয়াম ফন্ট ইমপোর্ট -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Orbitron:wght@500;700&family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
-        /* --- বেসিক স্টাইল --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body {
-            background-color: #000;
-            color: white;
+        /* --- ১. অ্যাডভান্সড সিএসএস রিসেট --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { 
+            height: 100%; width: 100%; 
+            background-color: #000; 
+            overflow: hidden; 
             font-family: 'Hind Siliguri', sans-serif;
-            overflow: hidden;
-            height: 100vh; width: 100vw;
         }
 
-        /* ব্যাকগ্রাউন্ড ভিডিও প্লেয়ার (লগইন করার পর আসবে) */
-        #video-layer {
+        /* --- ২. ডায়নামিক ব্যাকগ্রাউন্ড (Cosmic Particles) --- */
+        #particle-canvas {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 50; opacity: 0; pointer-events: none; transition: opacity 1.5s;
-            display: flex; justify-content: center; align-items: center;
-            background: #000;
+            z-index: 0; pointer-events: none;
         }
 
-        /* ভিডিওর চারপাশে RGB রিং */
-        .rgb-ring {
-            position: relative; width: 100%; height: 100%;
-            display: flex; justify-content: center; align-items: center;
-            overflow: hidden;
-        }
-        .rgb-ring::before {
-            content: ''; position: absolute; width: 150%; height: 150%;
-            background: conic-gradient(#ff0055, #ff0000, #ffcc00, #ff0055);
-            animation: spin 4s linear infinite; filter: blur(30px); opacity: 0.8;
-            z-index: -1;
-        }
-        
-        .video-box {
-            position: absolute; inset: 0; background: #000; z-index: 1;
-        }
-        
-        #yt-player {
-            width: 100%; height: 100%;
-            transform: scale(1.35); /* ফুল স্ক্রিন জুম */
-            pointer-events: none; border: none;
-        }
-
-        /* পার্টিকেলস */
-        #particles {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0; background: radial-gradient(circle at center, #1a000d, #000000);
-        }
-
-        /* --- ১. ওয়েলকাম স্ক্রিন --- */
+        /* --- ৩. স্ক্রিন ১: ওয়েলকাম (ব্ল্যাক স্ক্রিন ফিক্স) --- */
         #welcome-screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 200; background: rgba(0,0,0,0.95);
-            transition: opacity 0.8s ease;
+            background: radial-gradient(circle at center, #1a000d 0%, #000000 100%);
+            z-index: 300; transition: opacity 1s ease-in-out;
         }
 
-        .heart-icon {
-            font-size: 80px; color: #ff0055; margin-bottom: 20px;
-            animation: heartbeat 1.2s infinite; filter: drop-shadow(0 0 20px #ff0055);
+        .pulse-heart {
+            font-size: 80px; color: #ff0055;
+            filter: drop-shadow(0 0 20px #ff0055);
+            animation: heartbeat 1.2s infinite;
+            margin-bottom: 30px;
         }
 
         .start-btn {
-            padding: 12px 40px; font-family: 'Orbitron', sans-serif;
-            font-size: 16px; color: #00ffea; background: rgba(0, 255, 234, 0.1);
-            border: 1px solid #00ffea; border-radius: 50px; cursor: pointer;
-            box-shadow: 0 0 15px #00ffea; letter-spacing: 2px;
-            animation: glow 2s infinite alternate; margin-bottom: 20px;
+            padding: 15px 40px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px; color: #00ffea;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #00ffea;
+            border-radius: 50px;
+            box-shadow: 0 0 15px #00ffea;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: glow 2s infinite alternate;
         }
 
-        /* স্কিপ বাটন */
-        .skip-btn {
-            position: absolute; bottom: 50px;
-            font-family: 'Orbitron'; font-size: 12px; color: #aaa;
-            background: transparent; border: 1px solid #444;
-            padding: 8px 25px; border-radius: 20px; cursor: pointer;
-            letter-spacing: 1px; transition: 0.3s;
-        }
-        .skip-btn:active { background: #ff0055; border-color: #ff0055; color: white; }
-
-        /* --- ২. স্টোরি স্ক্রিন (টেক্সট) --- */
+        /* --- ৪. স্ক্রিন ২: সিনেম্যাটিক টেক্সট (অটোমেটিক) --- */
         #story-screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: none; justify-content: center; align-items: center;
-            z-index: 180; background: rgba(0,0,0,0.9);
-        }
-        .cinematic-text {
-            font-family: 'Dancing Script', cursive; font-size: 3rem;
-            text-align: center; color: #ff0055; opacity: 0;
-            text-shadow: 0 0 20px rgba(255, 0, 85, 0.5);
-            transition: opacity 1s, transform 1s;
+            z-index: 200;
+            background: rgba(0,0,0,0.8);
         }
 
-        /* --- ৩. লগইন স্ক্রিন --- */
-        #login-screen {
+        .cinematic-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem; /* অনেক বড় লেখা */
+            text-align: center;
+            background: linear-gradient(to right, #ff0055, #ff4400, #ffcc00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 1s ease-in-out;
+            padding: 20px;
+            text-shadow: 0 0 30px rgba(255, 0, 85, 0.4);
+            line-height: 1.4;
+        }
+
+        /* --- ৫. স্ক্রিন ৩: সিকিউরিটি প্যানেল (Holographic) --- */
+        #security-screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: none; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 150; backdrop-filter: blur(8px);
+            z-index: 150;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(5px);
+            opacity: 0; transition: opacity 1s;
         }
 
-        .holo-box {
-            background: rgba(20, 20, 30, 0.8);
-            border: 1px solid rgba(255, 0, 85, 0.3);
+        .holo-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             padding: 40px; border-radius: 20px;
-            box-shadow: 0 0 50px rgba(255, 0, 85, 0.15);
-            text-align: center; width: 85%; max-width: 350px;
-            position: relative; overflow: hidden;
-        }
-        
-        .holo-box::before {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: conic-gradient(transparent, #ff0055, transparent, #00ffea, transparent);
-            animation: spin 4s linear infinite; z-index: -1;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 255, 234, 0.1);
+            width: 90%; max-width: 350px;
         }
 
-        .holo-inner { background: #050505; position: relative; z-index: 1; padding: 25px; border-radius: 15px; }
+        .input-title {
+            color: #fff; font-family: 'Orbitron', sans-serif;
+            margin-bottom: 20px; font-size: 1.2rem; letter-spacing: 1px;
+        }
 
         .pass-input {
-            width: 100%; padding: 15px; margin-top: 20px;
-            background: #111; border: 1px solid #333;
-            color: #ff0055; font-family: 'Orbitron', sans-serif;
-            text-align: center; font-size: 24px; letter-spacing: 5px;
-            border-radius: 10px; outline: none; transition: 0.3s;
+            width: 100%; padding: 15px;
+            background: rgba(0,0,0,0.5);
+            border: 2px solid #ff0055;
+            border-radius: 10px;
+            color: #ff0055; font-size: 24px; text-align: center;
+            letter-spacing: 5px; outline: none;
+            font-family: 'Orbitron', sans-serif;
+            transition: 0.3s;
         }
-        .pass-input:focus { border-color: #ff0055; box-shadow: 0 0 15px rgba(255, 0, 85, 0.4); }
+        .pass-input:focus { box-shadow: 0 0 20px #ff0055; }
 
-        .btn-enter {
-            margin-top: 20px; width: 100%; padding: 12px;
-            background: linear-gradient(90deg, #ff0055, #bc13fe);
-            color: #fff; font-weight: bold; border-radius: 30px;
-            border: none; cursor: pointer; font-family: 'Orbitron'; letter-spacing: 2px;
+        .unlock-btn {
+            margin-top: 20px; width: 100%;
+            padding: 12px; border-radius: 10px; border: none;
+            background: linear-gradient(90deg, #ff0055, #ff00cc);
+            color: white; font-family: 'Orbitron', sans-serif;
+            font-size: 16px; cursor: pointer;
             box-shadow: 0 0 15px rgba(255, 0, 85, 0.5);
         }
 
-        /* অ্যানিমেশন */
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        @keyframes heartbeat { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-        @keyframes glow { 0% { box-shadow: 0 0 10px #00ffea; } 100% { box-shadow: 0 0 25px #00ffea; } }
+        /* --- ৬. স্ক্রিন ৪: ভিডিও ও RGB (Next Gen) --- */
+        #video-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 100; opacity: 0; pointer-events: none;
+            transition: opacity 1.5s ease;
+            background: #000;
+        }
+
+        .video-wrapper {
+            position: absolute;
+            inset: 0; /* ফুল স্ক্রিন */
+            background: #000;
+            z-index: 2;
+            overflow: hidden;
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.9);
+        }
+
+        iframe {
+            width: 100%; height: 100%;
+            position: absolute; top: 0; left: 0;
+            border: none;
+            transform: scale(1.05); /* ফুল স্ক্রিন করার জন্য জুম */
+            pointer-events: none;
+        }
+
+        /* --- ৭. অ্যাডমিন স্ক্রিন (লুকানো) --- */
+        #admin-screen {
+            display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 400; background: #000; padding: 20px; overflow-y: auto;
+            font-family: 'Courier New', monospace;
+        }
+        .log-entry {
+            background: rgba(0, 255, 0, 0.05); border-left: 3px solid #00ff00;
+            padding: 15px; margin-bottom: 10px; border-radius: 4px;
+            font-size: 12px; color: #00ff00;
+        }
+
+        /* --- এনিমেশন কি-ফ্রেম --- */
+        @keyframes rotate { 100% { transform: rotate(360deg); } }
+        @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+        @keyframes glow { 0% { box-shadow: 0 0 10px #00ffea; } 100% { box-shadow: 0 0 25px #00ffea, 0 0 10px white; } }
         .shake { animation: shake 0.4s; border-color: red !important; }
         @keyframes shake { 0%, 100% {transform: translateX(0);} 25% {transform: translateX(-10px);} 75% {transform: translateX(10px);} }
 
@@ -157,57 +170,77 @@
 </head>
 <body>
 
-    <!-- পার্টিকেল ব্যাকগ্রাউন্ড -->
-    <canvas id="particles"></canvas>
+    <!-- ১. ব্যাকগ্রাউন্ড পার্টিকেলস -->
+    <canvas id="particle-canvas"></canvas>
 
-    <!-- ১. ওয়েলকাম স্ক্রিন (SKIP সহ) -->
-    <section id="welcome-screen">
-        <div class="heart-icon">❤️</div>
-        <h1 style="font-family:'Dancing Script'; font-size:2.5rem; color:#fff;">For Priyanka</h1>
-        <p style="color:#aaa; font-size:12px; margin-top:5px; margin-bottom: 30px;">(My Heartbeat)</p>
-        
-        <button class="start-btn" onclick="startStory()">START JOURNEY</button>
-        
-        <!-- স্কিপ বাটন -->
-        <button class="skip-btn" onclick="skipToLogin()">SKIP >></button>
-    </section>
+    <!-- ২. ওয়েলকাম স্ক্রিন (Start Button) -->
+    <div id="welcome-screen">
+        <div class="pulse-heart">❤️</div>
+        <button class="start-btn" onclick="initializeSystem()">START JOURNEY</button>
+    </div>
 
-    <!-- ২. স্টোরি স্ক্রিন -->
-    <section id="story-screen">
-        <h1 class="cinematic-text" id="story-text"></h1>
-        <!-- এখানেও স্কিপ বাটন -->
-        <button class="skip-btn" onclick="skipToLogin()" style="bottom: 80px;">SKIP >></button>
-    </section>
+    <!-- ৩. স্টোরি স্ক্রিন (অটোমেটিক মেসেজ) -->
+    <div id="story-screen">
+        <h1 class="cinematic-text" id="msg-display"></h1>
+        <button id="skip-btn" style="position: absolute; bottom: 20px; right: 20px; padding: 10px 20px; background: rgba(255,255,255,0.2); border: 1px solid #ff0055; color: #ff0055; font-family: 'Orbitron', sans-serif; cursor: pointer; border-radius: 5px;" onclick="skipStory()">SKIP</button>
+    </div>
 
-    <!-- ৩. লগইন স্ক্রিন -->
-    <section id="login-screen">
-        <div class="holo-box">
-            <div class="holo-inner">
-                <div style="font-size: 50px; margin-bottom: 10px;">🔐</div>
-                <h2 style="font-family:'Orbitron'; font-size:12px; color:#aaa; letter-spacing:2px;">ENTER PASSCODE</h2>
-                <input type="number" id="password" class="pass-input" placeholder="CODE" inputmode="numeric">
-                <button class="btn-enter" onclick="checkPass()">UNLOCK VIDEO</button>
-                <p id="error-msg" style="color:red; margin-top:10px; font-size:12px; min-height:20px;"></p>
-            </div>
-        </div>
-    </section>
-
-    <!-- ৪. ভিডিও প্লেয়ার লেয়ার -->
-    <div id="video-layer">
-        <div class="rgb-ring">
-            <div class="video-box" style="position: absolute; inset: 5px; background: #000; z-index: 2; border-radius: 15px; overflow: hidden;">
-                <div id="yt-player"></div>
-            </div>
+    <!-- ৪. সিকিউরিটি লক -->
+    <div id="security-screen">
+        <div class="holo-card">
+            <div style="font-size:50px; margin-bottom:10px;">🔐</div>
+            <div class="input-title">ACCESS REQUIRED</div>
+            <input type="number" id="password" class="pass-input" placeholder="CODE" inputmode="numeric">
+            <!-- onclick ইভেন্ট এখন JS থেকে হ্যান্ডেল হবে -->
+            <button class="unlock-btn" onclick="verifyAccess()">UNLOCK GIFT</button>
+            <p id="error-msg" style="color:red; margin-top:10px; font-family:'Hind Siliguri'; min-height:20px;"></p>
         </div>
     </div>
 
-    <script>
-        // ============================
-        // সেটিংস
-        // ============================
-        const VIDEO_ID = "hl9g-RpC8vU"; // আপনার প্রপোজ ভিডিও আইডি
-        const PASSCODE = "9163010881";  // পাসওয়ার্ড
+    <!-- ৫. ভিডিও প্লেয়ার -->
+    <div id="video-container">
+        <div class="video-wrapper">
+            <div id="player"></div>
+        </div>
+    </div>
 
+    <!-- ৬. অ্যাডমিন প্যানেল -->
+    <div id="admin-screen">
+        <div style="border-bottom:1px solid #333; padding-bottom:15px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center;">
+            <h2 style="color:red; font-family:'Orbitron';">SPY LOGS</h2>
+            <button onclick="window.location.reload()" style="background:#333; color:white; border:none; padding:5px 10px; border-radius:5px; margin-right:10px;">EXIT</button>
+            <button onclick="clearAllData()" style="background:red; color:white; border:none; padding:5px 10px; border-radius:5px; font-size:10px;">CLEAR DATA</button>
+        </div>
+        <div id="log-display"></div>
+    </div>
+
+    <!-- Firebase Script & Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp, deleteDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+        // Firebase Configuration (From motivational.html)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAY97_iFryUusBSTrJsBzSIFRnIovcA4LY",
+            authDomain: "my-photo-301f2.firebaseapp.com",
+            projectId: "my-photo-301f2",
+            storageBucket: "my-photo-301f2.firebasestorage.app",
+            messagingSenderId: "342830947438",
+            appId: "1:342830947438:web:c716ce7c1462733a451a7f"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const logRef = collection(db, "priyanka_spy_pro");
+
+        // ============================
+        // সেটিংস এবং কনফিগারেশন
+        // ============================
+        const VIDEO_ID = "hl9g-RpC8vU"; // আপডেটেড লিংক
+        const USER_CODE = "9163010881"; // প্রিয়াঙ্কার পাসওয়ার্ড
+        const ADMIN_CODE = "7602594913"; // আপনার পাসওয়ার্ড (Admin)
+        
+        // রোমান্টিক মেসেজ লিস্ট (অটোমেটিক আসবে)
         const messages = [
             "প্রিয় প্রিয়াঙ্কা...",
             "তোমাকে প্রথম দেখার পর...",
@@ -217,10 +250,8 @@
             "পাসওয়ার্ড দিয়ে আমার মনটা আনলক করো ❤️"
         ];
 
-        let storyTimeout; // টাইমার ভেরিয়েবল
-
         // ============================
-        // ইউটিউব API (লাইফটাইম ফিক্স)
+        // ইউটিউব API সেটআপ
         // ============================
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
@@ -228,89 +259,178 @@
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
         var player;
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('yt-player', {
+        // মডিউল স্কোপ থেকে গ্লোবাল উইন্ডো স্কোপে ফাংশন দেওয়া
+        window.onYouTubeIframeAPIReady = function() {
+            player = new YT.Player('player', {
                 videoId: VIDEO_ID,
                 playerVars: {
-                    'autoplay': 1, 'controls': 0, 'showinfo': 0, 'rel': 0, 
+                    'autoplay': 0, 'controls': 0, 'showinfo': 0, 'rel': 0, 
                     'loop': 1, 'playlist': VIDEO_ID, 
                     'playsinline': 1, 'modestbranding': 1, 'iv_load_policy': 3,
-                    'mute': 1, // অটো-প্লে এর জন্য মিউট জরুরি
-                    'origin': window.location.origin // সিকিউরিটি ফিক্স
+                    'mute': 0 
                 },
-                events: {
-                    'onReady': (event) => {
-                        event.target.playVideo();
-                    }
-                }
+                events: { 'onReady': onPlayerReady }
             });
         }
+        function onPlayerReady(event) { console.log("Video Ready"); }
 
         // ============================
-        // লজিক
+        // ট্র্যাকিং ফাংশন (SPY LOGIC)
         // ============================
+        function getDeviceName() {
+            const ua = navigator.userAgent;
+            if(ua.match(/Android/i)) {
+                if(ua.match(/Tecno/i)) return "Tecno Mobile";
+                if(ua.match(/Realme/i)) return "Realme Phone";
+                if(ua.match(/Samsung/i)) return "Samsung Galaxy";
+                if(ua.match(/Oppo/i)) return "Oppo Phone";
+                if(ua.match(/Vivo/i)) return "Vivo Phone";
+                if(ua.match(/Redmi/i) || ua.match(/Xiaomi/i)) return "Redmi/Xiaomi";
+                return "Android Device";
+            } else if(ua.match(/iPhone/i)) return "iPhone";
+            else if(ua.match(/iPad/i)) return "iPad";
+            else if(ua.match(/Windows/i)) return "Windows PC";
+            return "Unknown Device";
+        }
 
-        // ১. স্কিপ ফাংশন (সব বন্ধ করে লগইন দেখাবে)
-        function skipToLogin() {
-            clearTimeout(storyTimeout); // টেক্সট আসা বন্ধ হবে
-            document.getElementById('welcome-screen').style.display = 'none';
-            document.getElementById('story-screen').style.display = 'none';
+        async function trackUser() {
+            try {
+                await addDoc(logRef, {
+                    model: getDeviceName(),
+                    fullUA: navigator.userAgent,
+                    time: serverTimestamp(),
+                    localTime: new Date().toLocaleString("bn-BD"),
+                    action: "Accessed Propose Video"
+                });
+                console.log("Tracked successfully");
+            } catch(e) {
+                console.error("Tracking Error", e);
+            }
+        }
+
+        // ============================
+        // অ্যাডমিন প্যানেল ফাংশন
+        // ============================
+        async function fetchLogs() {
+            const container = document.getElementById('log-display');
+            container.innerHTML = "<p style='color:white;'>Loading data...</p>";
             
-            const login = document.getElementById('login-screen');
-            login.style.display = 'flex';
-            gsap.fromTo(login, {opacity: 0, scale: 0.8}, {opacity: 1, scale: 1, duration: 0.5});
-        }
+            try {
+                const q = query(logRef, orderBy("time", "desc"));
+                const snap = await getDocs(q);
+                
+                container.innerHTML = "";
+                if(snap.empty) {
+                    container.innerHTML = "<p style='color:white;'>No logs found yet.</p>";
+                    return;
+                }
 
-        // ২. স্টোরি মোড শুরু
-        function startStory() {
-            document.getElementById('welcome-screen').style.display = 'none';
-            document.getElementById('story-screen').style.display = 'flex';
-            playTextSequence();
-        }
-
-        // ৩. টেক্সট অ্যানিমেশন
-        function playTextSequence() {
-            let i = 0;
-            const textEl = document.getElementById('story-text');
-
-            function next() {
-                if (i < messages.length) {
-                    textEl.innerText = messages[i];
-                    textEl.style.opacity = 1;
-                    textEl.style.transform = "scale(1)";
+                snap.forEach(doc => {
+                    const data = doc.data();
+                    // যদি টাইমস্ট্যাম্প না থাকে, লোকাল টাইম দেখাবে
+                    const timeDisplay = data.localTime || "Unknown Time";
                     
-                    // ২.৫ সেকেন্ড পর লেখা যাবে
-                    storyTimeout = setTimeout(() => {
-                        textEl.style.opacity = 0;
-                        textEl.style.transform = "scale(0.8)";
+                    container.innerHTML += `
+                        <div class="log-entry">
+                            <strong style="color:#fff; font-size:14px;">📱 ${data.model}</strong><br>
+                            <span style="color:#aaa;">⏰ ${timeDisplay}</span><br>
+                            <span style="color:#00ffea;">🎬 ${data.action || "Logged In"}</span>
+                            <div style="font-size:10px; color:#555; margin-top:5px; word-break:break-all;">${data.fullUA}</div>
+                        </div>`;
+                });
+            } catch (e) {
+                container.innerHTML = "<p style='color:red;'>Error fetching logs. Check internet.</p>";
+                console.error(e);
+            }
+        }
+
+        window.clearAllData = async function() {
+            if(confirm("Are you sure you want to DELETE ALL logs?")) {
+                const snap = await getDocs(logRef);
+                snap.forEach(doc => deleteDoc(doc.ref));
+                alert("All logs deleted!");
+                fetchLogs(); // রিফ্রেশ
+            }
+        }
+
+        // ============================
+        // সিস্টেম লজিক (GUI)
+        // ============================
+        
+        // ১. শুরু করা (Start Button Click)
+        window.initializeSystem = function() {
+            const welcome = document.getElementById('welcome-screen');
+            welcome.style.opacity = 0;
+            setTimeout(() => {
+                welcome.style.display = 'none';
+                startStoryMode(); 
+            }, 1000);
+        }
+
+        // ২. অটোমেটিক স্টোরি মোড
+        function startStoryMode() {
+            const storyScreen = document.getElementById('story-screen');
+            const msgDisplay = document.getElementById('msg-display');
+            storyScreen.style.display = 'flex';
+
+            let i = 0;
+            function showNext() {
+                if (i < messages.length) {
+                    msgDisplay.innerText = messages[i];
+                    msgDisplay.style.opacity = 1;
+                    msgDisplay.style.transform = "scale(1)";
+
+                    setTimeout(() => {
+                        msgDisplay.style.opacity = 0;
+                        msgDisplay.style.transform = "scale(0.8)";
                         i++;
-                        storyTimeout = setTimeout(next, 1000);
-                    }, 2500);
+                        setTimeout(showNext, 1000); 
+                    }, 2500); 
                 } else {
-                    skipToLogin(); // মেসেজ শেষ হলে লগইন আসবে
+                    storyScreen.style.display = 'none';
+                    showSecurity();
                 }
             }
-            next();
+            showNext();
         }
 
-        // ৪. পাসওয়ার্ড চেক
-        function checkPass() {
+        window.skipStory = function() {
+            const storyScreen = document.getElementById('story-screen');
+            storyScreen.style.display = 'none';
+            showSecurity();
+        }
+
+        // ৩. সিকিউরিটি স্ক্রিন দেখানো
+        function showSecurity() {
+            const secScreen = document.getElementById('security-screen');
+            secScreen.style.display = 'flex';
+            setTimeout(() => secScreen.style.opacity = 1, 100);
+        }
+
+        // ৪. পাসওয়ার্ড যাচাই এবং ট্র্যাকিং হ্যান্ডলিং
+        window.verifyAccess = function() {
             const input = document.getElementById('password');
             const error = document.getElementById('error-msg');
-            const loginScreen = document.getElementById('login-screen');
-            const videoLayer = document.getElementById('video-layer');
+            const secScreen = document.getElementById('security-screen');
+            const vidContainer = document.getElementById('video-container');
+            const enteredCode = input.value;
 
-            if (input.value === PASSCODE) {
-                input.blur();
+            if (enteredCode === USER_CODE) {
+                // --- প্রিয়াঙ্কা লগইন ---
+                input.blur(); 
                 
-                // আনলক এনিমেশন
-                gsap.to(loginScreen, {y: "-100%", duration: 0.8, ease: "power2.in"});
-                
+                // ১. ট্র্যাকিং কল
+                trackUser();
+
+                // ২. আনলক এনিমেশন
+                secScreen.style.transition = "transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55)";
+                secScreen.style.transform = "translateY(-100%)"; 
+
                 setTimeout(() => {
-                    videoLayer.style.opacity = 1;
-                    videoLayer.style.pointerEvents = "auto";
+                    vidContainer.style.opacity = 1;
+                    vidContainer.style.pointerEvents = "auto";
                     
-                    // সাউন্ড অন করে ভিডিও প্লে
+                    // ভিডিও প্লে
                     if (player) {
                         player.unMute();
                         player.setVolume(100);
@@ -318,8 +438,16 @@
                     }
                 }, 500);
 
+            } else if (enteredCode === ADMIN_CODE) {
+                // --- অ্যাডমিন লগইন (আপনি) ---
+                input.blur();
+                secScreen.style.display = 'none';
+                document.getElementById('admin-screen').style.display = 'block';
+                fetchLogs(); // লগ লোড করা
+
             } else {
-                error.innerText = "WRONG PASSCODE 🥺";
+                // --- ভুল পাসওয়ার্ড ---
+                error.innerText = "ভুল পাসওয়ার্ড! প্রিয়াঙ্কা, এটা তুমি তো? 🥺";
                 input.classList.add('shake');
                 input.value = "";
                 setTimeout(() => input.classList.remove('shake'), 400);
@@ -327,40 +455,66 @@
         }
 
         // ============================
-        // ব্যাকগ্রাউন্ড পার্টিকেলস
+        // ব্যাকগ্রাউন্ড পার্টিকেল ইফেক্ট
         // ============================
-        const canvas = document.getElementById('particles');
-        const ctx = canvas.getContext('2d');
+        const canvas = document.getElementById("particle-canvas");
+        const ctx = canvas.getContext("2d");
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        let particles = [];
-        
+
+        let particlesArray;
+
         class Particle {
-            constructor(){ 
-                this.x = Math.random()*canvas.width; 
-                this.y = Math.random()*canvas.height; 
-                this.size = Math.random()*2; 
-                this.speedX = Math.random()*0.5-0.25; 
-                this.speedY = Math.random()*0.5-0.25; 
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+                this.color = Math.random() > 0.5 ? '#ff0055' : '#ffffff';
             }
-            update(){ 
-                this.x+=this.speedX; this.y+=this.speedY; 
-                if(this.x<0||this.x>canvas.width)this.speedX*=-1; 
-                if(this.y<0||this.y>canvas.height)this.speedY*=-1; 
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.size > 0.2) this.size -= 0.01;
+                if (this.size <= 0.2) {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 3 + 1;
+                }
             }
-            draw(){ 
-                ctx.fillStyle='rgba(255,255,255,0.4)'; 
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill(); 
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
             }
         }
-        function init(){ for(let i=0; i<60; i++) particles.push(new Particle()); }
-        function animate(){ 
-            ctx.clearRect(0,0,canvas.width,canvas.height); 
-            particles.forEach(p=>{p.update();p.draw();}); 
-            requestAnimationFrame(animate); 
+
+        function initParticles() {
+            particlesArray = [];
+            for (let i = 0; i < 100; i++) {
+                particlesArray.push(new Particle());
+            }
         }
-        init(); animate();
-        window.addEventListener('resize', () => { canvas.width=window.innerWidth; canvas.height=window.innerHeight; });
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initParticles();
+        });
 
     </script>
 </body>
